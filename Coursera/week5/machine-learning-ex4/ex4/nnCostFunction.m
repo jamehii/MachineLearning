@@ -52,12 +52,22 @@ for i = 1 : m
   % Get sample output from each row & transpose to vector
   sampleOutActivNodes = outActivNodes(i,:)';
   
+  % Calculate cost function J for each sample
   positiveLog = -binaryY .* log(sampleOutActivNodes);
   negativeLog = -(1-binaryY) .* log(1-sampleOutActivNodes);
   Jsamples(i) = sum(positiveLog + negativeLog);
+
 endfor
 
-  J = sum(Jsamples) / m;
+regTheta1 = Theta1(:, 2:end);
+regTheta2 = Theta2(:, 2:end);
+
+sumTheta1 = sum((regTheta1.^2)(:));
+sumTheta2 = sum((regTheta2.^2)(:));
+
+regularizedTerm = (lambda / (2*m)) * (sumTheta1 + sumTheta2);
+
+J = sum(Jsamples) / m + regularizedTerm;
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
