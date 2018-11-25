@@ -30,6 +30,35 @@ J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
+% Add X0 = 1 to the input X
+Xbias = [ones(m,1), X];
+
+% Hidden layer activation nodes
+hiddenActivNodes = sigmoid(Xbias * Theta1');
+hiddenActivNodesBias = [ones(m,1), hiddenActivNodes];
+
+% Output layer activation nodes
+outActivNodes = sigmoid(hiddenActivNodesBias * Theta2');
+
+Jsamples = zeros(m,1);
+
+% Loop through each sample in row
+for i = 1 : m
+
+  % convert ouput Y into meaningful matrix form  
+  binaryY = zeros(num_labels,1);
+  binaryY(y(i)) = 1;
+
+  % Get sample output from each row & transpose to vector
+  sampleOutActivNodes = outActivNodes(i,:)';
+  
+  positiveLog = -binaryY .* log(sampleOutActivNodes);
+  negativeLog = -(1-binaryY) .* log(1-sampleOutActivNodes);
+  Jsamples(i) = sum(positiveLog + negativeLog);
+endfor
+
+  J = sum(Jsamples) / m;
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
 %               following parts.
