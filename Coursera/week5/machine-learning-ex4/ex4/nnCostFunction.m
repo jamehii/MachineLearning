@@ -33,7 +33,7 @@ Theta2_grad = zeros(size(Theta2));
 % Add X0 = 1 to the input X
 Xbias = [ones(m,1), X];
 
-% Hidden layer activation nodes
+% Hidden layer activation nodes + bias term
 hiddenActivNodes = sigmoid(Xbias * Theta1');
 hiddenActivNodesBias = [ones(m,1), hiddenActivNodes];
 
