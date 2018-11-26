@@ -59,14 +59,20 @@ for i = 1 : m
 
 endfor
 
+% Since we do not regularize bias term in column 1
+% so we only take theta from column 2 to end column
 regTheta1 = Theta1(:, 2:end);
 regTheta2 = Theta2(:, 2:end);
 
-sumTheta1 = sum((regTheta1.^2)(:));
-sumTheta2 = sum((regTheta2.^2)(:));
+% Vectorize the regTheta1 & regTheta2 & square each term
+% then, sum up all the square terms
+sumTheta1 = sum(regTheta1(:).^2);
+sumTheta2 = sum(regTheta2(:).^2);
 
+% Calculate the regularized term
 regularizedTerm = (lambda / (2*m)) * (sumTheta1 + sumTheta2);
 
+% Include the regularized term to cost function J
 J = sum(Jsamples) / m + regularizedTerm;
 
 % ====================== YOUR CODE HERE ======================
