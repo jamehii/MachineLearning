@@ -57,6 +57,15 @@ for i = 1 : m
   negativeLog = -(1-binaryY) .* log(1-sampleOutActivNodes);
   Jsamples(i) = sum(positiveLog + negativeLog);
 
+  % Calculate backpropagation
+  sampleDelta2 = sampleOutActivNodes - binaryY;
+  Theta2_grad += sampleDelta2 * hiddenActivNodesBias(i,:);
+
+  hiddenLayerActiveNodes = hiddenActivNodes(i, :)';
+  Theta2NoBias = Theta2(:,2:end);
+  sampleDelta1 = (Theta2NoBias' * sampleDelta2) .* hiddenLayerActiveNodes .* (1-hiddenLayerActiveNodes);
+  Theta1_grad += sampleDelta1 * Xbias(i,:);
+
 endfor
 
 regTheta1 = Theta1(:, 2:end);
@@ -68,6 +77,10 @@ sumTheta2 = sum((regTheta2.^2)(:));
 regularizedTerm = (lambda / (2*m)) * (sumTheta1 + sumTheta2);
 
 J = sum(Jsamples) / m + regularizedTerm;
+
+Theta2_grad = Theta2_grad / m .+ (lambda/m)*[zeros(num_labels,1), Theta2(:,2:end)];
+Theta1_grad = Theta1_grad / m .+ (lambda/m)*[zeros(hidden_layer_size,1), Theta1(:,2:end)];
+
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
