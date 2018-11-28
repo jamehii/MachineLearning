@@ -84,6 +84,9 @@ regularizedTerm = (lambda / (2*m)) * (sumTheta1 + sumTheta2);
 % Include the regularized term to cost function J
 J = sum(Jsamples) / m + regularizedTerm;
 
+% Include regularized term into gradient descent
+% Notice that we do no regularize the bias term(1st column) with lambda
+% that's why we set zeros to the 1st column for both Theta1 & Theta2
 Theta2_grad = Theta2_grad / m .+ (lambda/m)*[zeros(num_labels,1), Theta2(:,2:end)];
 Theta1_grad = Theta1_grad / m .+ (lambda/m)*[zeros(hidden_layer_size,1), Theta1(:,2:end)];
 
