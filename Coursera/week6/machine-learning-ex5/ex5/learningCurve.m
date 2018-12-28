@@ -21,6 +21,19 @@ m = size(X, 1);
 error_train = zeros(m, 1);
 error_val   = zeros(m, 1);
 
+for i = 1 : m
+  
+  % Find the trainedTheta with training datasets X and y
+  trainedTheta = trainLinearReg( X(1:i,:), y(1:i,:), lambda );
+  
+  % Using trainedTheta to find training datasets error
+  error_train(i) = linearRegCostFunction( X(1:i,:), y(1:i,:), trainedTheta, 0 );
+  
+  % Using trainedTheta to find cross-validation datasets error
+  error_val(i) = linearRegCostFunction( Xval, yval, trainedTheta, 0 );
+  
+endfor
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: Fill in this function to return training errors in 
 %               error_train and the cross validation errors in error_val. 
